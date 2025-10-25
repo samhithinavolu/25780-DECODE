@@ -8,11 +8,12 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(name="SamhithIdea", group="OpMode")
 public class SamhithIdea extends LinearOpMode {
 
-    private DcMotor intakeMotor, frontLeft, frontRight, backLeft, backRight;
+    private DcMotor intakeMotor, frontLeft, frontRight, backLeft, backRight, shooter;
 
     public void runOpMode() {
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        shooter = hardwareMap.get(DcMotor.class, "shooter");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -27,12 +28,14 @@ public class SamhithIdea extends LinearOpMode {
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-                intakeMotor.setPower(gamepad1.right_trigger);
+                intakeMotor.setPower(gamepad1.left_trigger);
+                shooter.setPower(gamepad1.right_trigger);
                 robotMovement(0.5);
             }
         }
