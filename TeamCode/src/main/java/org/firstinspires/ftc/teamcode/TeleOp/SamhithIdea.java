@@ -2,13 +2,16 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="SamhithIdea", group="OpMode")
 public class SamhithIdea extends LinearOpMode {
 
     private DcMotor intakeMotor, frontLeft, frontRight, backLeft, backRight, shooter;
+    private CRServo intakeServo;
 
     public void runOpMode() {
 
@@ -18,6 +21,7 @@ public class SamhithIdea extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+        intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -34,7 +38,17 @@ public class SamhithIdea extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-                intakeMotor.setPower(gamepad1.left_trigger);
+                while (gamepad1.left_trigger != 0 && opModeIsActive()) {
+                    intakeServo.setPower(-1);
+                    intakeMotor.setPower(gamepad1.left_trigger);
+                    shooter.setPower(gamepad1.right_trigger);
+                    robotMovement(0.5);
+                }
+
+                while (gamepad1.left_trigger == 0 && opModeIsActive()) {
+                    intakeServo.setPower(0);
+                    intakeMotor.setPower(0);
+                }
                 shooter.setPower(gamepad1.right_trigger);
                 robotMovement(0.5);
             }
@@ -51,5 +65,3 @@ public class SamhithIdea extends LinearOpMode {
         frontRight.setPower(speedPower * (-pivot + vertical - horizontal));
     }
 }
-
-//Test Comment
