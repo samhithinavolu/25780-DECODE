@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class SamhithIdea extends LinearOpMode {
 
     private DcMotor intakeMotor, frontLeft, frontRight, backLeft, backRight, shooter;
-    private CRServo intakeServo;
+    private CRServo intakeServo, leftTransfer, rightTransfer;
 
     public void runOpMode() {
 
@@ -22,6 +22,8 @@ public class SamhithIdea extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -41,7 +43,6 @@ public class SamhithIdea extends LinearOpMode {
                 while (gamepad1.left_trigger != 0 && opModeIsActive()) {
                     intakeServo.setPower(-1);
                     intakeMotor.setPower(gamepad1.left_trigger);
-                    shooter.setPower(gamepad1.right_trigger);
                     robotMovement(0.5);
                 }
 
@@ -49,8 +50,18 @@ public class SamhithIdea extends LinearOpMode {
                     intakeServo.setPower(0);
                     intakeMotor.setPower(0);
                 }
-                shooter.setPower(gamepad1.right_trigger);
+
+                while (gamepad1.right_trigger == 0 && opModeIsActive()) {
+                    //rightTransfer.setPower(0);
+                    //leftTransfer.setPower(0);
+                }
+                //shooter.setPower(gamepad1.right_trigger);
                 robotMovement(0.5);
+
+//                while (gamepad1.right_trigger != 0 && opModeIsActive()) {
+//                    rightTransfer.setPower(-0.01);
+//                    leftTransfer.setPower(0.01);
+//                }
             }
         }
     }
